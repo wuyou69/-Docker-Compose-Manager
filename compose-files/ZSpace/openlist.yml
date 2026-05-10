@@ -1,0 +1,15 @@
+services:
+  openlist:
+    image: openlistteam/openlist:v4.0.4-aio
+    container_name: openlist
+    ports:
+      - 24005:5244
+    volumes:
+      - /tmp/zfsv3/sata11/13051661743/data/Docker/openlist:/opt/alist/data
+    environment:
+      - PUID=1016
+      - PGID=1017
+      - UMASK=022
+      - TZ=Asia/Shanghai
+    restart: always
+    network_mode: bridge

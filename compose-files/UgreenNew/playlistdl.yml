@@ -1,0 +1,15 @@
+services:
+  playlistdl:
+    image: tanner23456/playlistdl:v2
+    container_name: playlistdl
+    restart: always
+    network_mode: bridge
+    ports:
+      - 21020:5000
+    volumes:
+      - /volume1/@home/Testroot/Docker/playlistdl/music:/data
+    environment:
+      - ADMIN_USERNAME=admin
+      - ADMIN_PASSWORD=password
+      - AUDIO_DOWNLOAD_PATH=/data
+      - CLEANUP_INTERVAL=300

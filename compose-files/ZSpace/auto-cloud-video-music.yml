@@ -1,0 +1,107 @@
+name: auto-cloud-video-music
+
+services:
+  openlist:
+    image: openlistteam/openlist:v4.0.4-aio
+    container_name: openlist
+    ports:
+      - 31000:5244
+    volumes:
+      - /tmp/zfsv3/sata11/13051661743/data/Docker/auto-cloud-video-music/openlist:/opt/alist/data
+    environment:
+      - PUID=1000
+      - PGID=1001
+      - UMASK=022
+      - TZ=Asia/Shanghai
+    restart: always
+    network_mode: bridge
+
+  cloudsaver:
+    image: jiangrui1994/cloudsaver:test
+    container_name: cloudsaver
+    ports:
+      - 31010:8008
+    volumes:
+      - /tmp/zfsv3/sata11/13051661743/data/Docker/auto-cloud-video-music/cloudsaver/data:/app/data
+      - /tmp/zfsv3/sata11/13051661743/data/Docker/auto-cloud-video-music/cloudsaver/config:/app/config
+      - /tmp/zfsv3/sata11/13051661743/data/Docker/auto-cloud-video-music/cloudsaver/logs:/app/logs
+    restart: always
+    network_mode: bridge
+
+  alist-strm:
+    image: qilinzhu/alist-strm:latest
+    container_name: alist-strm
+    stdin_open: true
+    tty: true
+    ports:
+      - 31020:5000
+    volumes:
+      - /tmp/zfsv3/sata11/13051661743/data/Docker/auto-cloud-video-music/alist-strm:/config
+      - /tmp/zfsv3/sata11/13051661743/data/Video:/Video
+    restart: always
+    network_mode: bridge
+
+  qilin-auto:
+    container_name: qilin-auto
+    image: qilinzhu/qilin-auto:latest
+    ports:
+      - 31030:9090
+      - 31031:9009
+    volumes:
+      - /tmp/zfsv3/sata11/13051661743/data/Docker/auto-cloud-video-music/cloudsaver/logs:/app/logs
+      - /tmp/zfsv3/sata11/13051661743/data/Docker/auto-cloud-video-music/qilin-auto:/app/server/data
+    environment:
+      - NODE_ENV=production
+    restart: always
+    network_mode: bridge
+
+  emby:
+    image: amilys/embyserver:latest
+    container_name: embyserver
+    privileged: true
+    ports:
+      - 31040:8096
+    volumes:
+      - /tmp/zfsv3/sata11/13051661743/data/Docker/auto-cloud-video-music/emby/config:/config
+      - /tmp/zfsv3/sata11/13051661743/data/Video:/data
+    restart: always
+    network_mode: bridge
+
+  go-emby2openlist:
+    image: ambitiousjun/go-emby2openlist:v2.1.0
+    container_name: go-emby2openlist
+    ports:
+      - 31050:8095
+      - 31051:8094
+    volumes:
+      - /tmp/zfsv3/sata11/13051661743/data/Docker/auto-cloud-video-music/go-emby2openlist/config:/app/config.yml
+      - /tmp/zfsv3/sata11/13051661743/data/Docker/auto-cloud-video-music/go-emby2openlist/ssl:/app/ssl
+      - /tmp/zfsv3/sata11/13051661743/data/Docker/auto-cloud-video-music/go-emby2openlist/custom-js:/app/custom-js
+      - /tmp/zfsv3/sata11/13051661743/data/Docker/auto-cloud-video-music/go-emby2openlist/custom-css:/app/custom-css
+    environment:
+      - TZ=Asia/Shanghai
+      - GIN_MODE=release
+    restart: always
+    network_mode: bridge
+
+  music-tag-web:
+    image: xhongc/music_tag_web:latest
+    container_name: music-tag-web
+    ports:
+      - 31060:8001
+    volumes:
+      - /tmp/zfsv3/sata11/13051661743/data/Docker/auto-cloud-video-music/music-tag-web:/app/data
+      - /tmp/zfsv3/sata11/13051661743/data/:/app/media
+    restart: always
+    network_mode: bridge
+    
+  navidrome:
+    image: deluan/navidrome:latest
+    container_name: navidrome
+    ports:
+      - 31070:4533
+    volumes:
+      - /tmp/zfsv3/sata11/13051661743/data/Docker/auto-cloud-video-music/navidrome:/data
+      - /tmp/zfsv3/sata11/13051661743/data/:/music
+    restart: always
+    network_mode: bridge

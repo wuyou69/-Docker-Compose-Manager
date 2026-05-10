@@ -1,0 +1,10 @@
+services:
+  php-epg:
+    image: taksss/php-epg:latest
+    container_name: php-epg
+    ports:
+      - 20055:80
+    volumes:
+      - /tmp/zfsv3/sata11/13051661743/data/Docker/epg:/htdocs/data
+    restart: always
+    network_mode: bridge

@@ -1,0 +1,49 @@
+name: halo
+
+networks:
+  halo:
+    external: true
+
+services:
+  mysql:
+    image: mysql:8.0
+    container_name: mysql-halo
+    ports:
+      - "29000:3306"
+    volumes:
+      - /share/CACHEDEV1_DATA/Public/Docker/mysql/data:/var/lib/mysql
+    environment:
+      - MYSQL_ROOT_PASSWORD=123456
+      - MYSQL_DATABASE=halo
+      - MYSQL_USER=admin
+      - MYSQL_PASSWORD=password
+    restart: always
+    networks:
+      - halo
+    healthcheck:
+      test: ["CMD-SHELL", "mysqladmin ping -h localhost -u root -p123456"]
+      interval: 5s
+      retries: 10
+      start_period: 30s
+
+  halo:
+    image: registry.fit2cloud.com/halo/halo:2.20.20
+    container_name: halo
+    ports:
+      - "30075:8090"
+    volumes:
+      - /share/CACHEDEV1_DATA/Public/Docker/halo:/root/.halo2
+    environment:
+      - JVM_OPTS=-Xmx256m -Xms256m
+    command:
+      - --spring.r2dbc.url=r2dbc:pool:mysql://mysql-halo:3306/halo
+      - --spring.r2dbc.username=admin
+      - --spring.r2dbc.password=password
+      - --spring.sql.init.platform=mysql
+    restart: always
+    networks:
+      - halo
+    depends_on:
+      mysql:
+        condition: service_healthy
+    

@@ -1,0 +1,14 @@
+services:
+  fndesk:
+    container_name: fndesk
+    image: imgzcq/fndesk:latest
+    ports:
+      - 30075:9990
+      - 30076:9991
+    volumes:
+      - /usr/trim/www:/fnw
+      - /usr/trim/share/.restore:/res
+      - /usr/local/apps/@appcenter/trim.media:/trim.media
+      - ./deskdata:/deskdata
+    restart: always
+    network_mode: bridge

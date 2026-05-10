@@ -1,0 +1,12 @@
+services:
+  moontv:
+    image: ghcr.io/senshinya/moontv:latest
+    container_name: moontv
+    ports:
+      - 20050:3000
+    # volumes:
+    #   - /tmp/zfsv3/sata11/13051661743/data/Docker/moontv/config.json:/app/config.json
+    environment:
+      - PASSWORD=password
+    restart: always
+    network_mode: bridge

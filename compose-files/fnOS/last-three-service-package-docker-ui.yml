@@ -1,0 +1,12 @@
+services:
+  last-three-service-package-docker-ui:
+    image: lastthree/last-three-service-package-docker-ui:v1.0.5
+    container_name: last-three-service-package-docker-ui
+    ports:
+      - 26015:3000
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - /vol1/1000/Downloads:/app/downloads
+      - /vol1/1000/Compose:/app/data
+    restart: always
+    network_mode: bridge

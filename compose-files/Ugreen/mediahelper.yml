@@ -1,0 +1,10 @@
+services:
+  mediahelper:
+    image: rongyunmu/mediahelp
+    container_name: mediahelper
+    ports:
+      - 20065:80
+    volumes:
+      - /mnt/dm-1/.ugreen_nas/509155/Docker/mediahelper:/app/backend/config
+    restart: always
+    network_mode: bridge

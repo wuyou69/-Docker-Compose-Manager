@@ -1,0 +1,10 @@
+services:
+  mediahelper:
+    image: rongyunmu/mediahelp
+    container_name: mediahelper
+    ports:
+      - 20010:80
+    volumes:
+      - /vol1/1000/Docker/mediahelper:/app/backend/config
+    restart: always
+    network_mode: bridge
